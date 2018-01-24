@@ -2,11 +2,11 @@
 
 ** Design Notes
 The design was lightly segregated into backend and frontend components
-- to decouple program logic to backend (Terminal.scala) and user facing side to frontend (TerminalApp.scala)
+- to decouple program logic to backend ([[https://github.com/sidnt/knolworks/blob/master/src/main/scala/pos/Terminal.scala][Terminal.scala]]) and user facing side to frontend ([[https://github.com/sidnt/knolworks/blob/master/src/main/scala/pos/TerminalApp.scala][TerminalApp.scala]])
 - to decompose into a functional programming style where each function has a clearly delimited responsibility
 
 
-** Program Models
+** Program [[https://github.com/sidnt/knolworks/blob/master/src/main/scala/pos/Models.scala][Models]]
 The following type aliases were used, to provide domain specific meaningful names to primivite types
 
 | Alias          | Type                                         |
@@ -25,13 +25,13 @@ The following Case classes were used
 
 
 ** Core Logic
-It's encapsulated in function Terminal.scan whose parameters are the ProductCode for the next item to be scanned, the cart in which to scan the item in, and the pricing applicable.
+It's encapsulated in function [[https://github.com/sidnt/knolworks/blob/9c489a813288885cb0699ae0080d5458abddf907/src/main/scala/pos/Terminal.scala#L7][Terminal.scan]] whose parameters are the ProductCode for the next item to be scanned, the cart in which to scan the item in, and the pricing applicable.
 
 If the pricing is not defined for the item being scanned, it just returns the provided cart, notfying that the pricing isn't available for the given item. Otherwise, if the item isn't in the cart already, it adds the current item into the cart, and returns the updated cart. If the item is in the cart already, it checks if by adding the next item a group would be formed, if so, applies the group pricing, otherwise unit pricing, and returns the updated cart.
 
 
-** Testing
-The test is hardcoded with the pricing scheme and the sample carts as given in the assignment spec. The test logic, runs foldLeft on the given carts, with the empty cart as an accumulator value, so that the scan function is repeatedly applied from the left to calculate the final cart total and check whether it's equal to the expected value.
+** [[https://github.com/sidnt/knolworks/blob/master/src/test/scala/pos/TerminalSpec.scala][Testing]]
+The pricing scheme and the sample carts, are hardcoded in the tests, as given in the assignment spec. The test logic, runs foldLeft on the given carts, with the empty cart as an accumulator value, so that the scan function is repeatedly applied from the left to calculate the final cart total and check whether it's equal to the expected value.
 
 ** Usage
 It's an sbt project. ~sbt run~ and ~sbt test~ do their respective things from the root directory.
